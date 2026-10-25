@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Life & Budget Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="cube-wrapper">
+            <div class="cube">
+                <div class="cube-face front"><i class="fas fa-piggy-bank"></i></div>
+                <div class="cube-face back"><i class="fas fa-wallet"></i></div>
+                <div class="cube-face right"><i class="fas fa-dumbbell"></i></div>
+                <div class="cube-face left"><i class="fas fa-check-circle"></i></div>
+                <div class="cube-face top"><i class="fas fa-book-open"></i></div>
+                <div class="cube-face bottom"><i class="fas fa-utensils"></i></div>
+            </div>
+            <div class="cube-shadow"></div>
+        </div>
+        <div class="loader-text mt-4">LOADING</div>
+    </div>
+
+    <!-- Fixed Background Wrapper -->
+    <div id="fixed-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        
+        <!-- Shooting Stars Background -->
+        <div class="shooting-stars">
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-info">
+                <h1 id="greeting">Selamat Pagi Kafi!</h1>
+                <p id="current-date"><i class="far fa-calendar-alt"></i> <span></span></p>
+            </div>
+            <div class="header-actions">
+                <input type="date" id="date-filter" title="Filter Berdasarkan Tanggal">
+                <button id="theme-toggle" class="icon-btn" title="Toggle Tema"><i class="fas fa-moon"></i></button>
+                <button id="reset-btn" class="icon-btn danger-icon-btn" title="Reset Data Web"><i class="fas fa-rotate-left"></i></button>
+            </div>
+        </header>
+
+        <!-- Dashboard Summary -->
+        <section class="dashboard">
+            <div class="card summary-card">
+                <div class="summary-icon"><i class="fas fa-check-circle"></i></div>
+                <div class="summary-details">
+                    <h3>Progres Harian</h3>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="habit-progress"></div>
+                    </div>
+                    <p id="habit-progress-text">0% Selesai</p>
+                </div>
+            </div>
+            <div class="card summary-card">
+                <div class="summary-icon savings-icon"><i class="fas fa-piggy-bank"></i></div>
+                <div class="summary-details">
+                    <h3>Total Tabungan</h3>
+                    <h2 id="total-savings-display">Rp 0</h2>
+                </div>
+            </div>
+            <div class="card summary-card">
+                <div class="summary-icon cashflow-icon"><i class="fas fa-wallet"></i></div>
+                <div class="summary-details">
+                    <h3>Cashflow Hari Ini</h3>
+                    <h2 id="today-cashflow">Rp 0</h2>
+                </div>
+            </div>
+        </section>
+
+        <div class="main-grid">
+            <!-- Left Column: Habits & Routines -->
+            <div class="column">
+                <!-- Sports Category -->
+                <section class="card habit-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-dumbbell"></i> Olahraga</h2>
+                        <button class="add-btn" id="add-workout-btn"><i class="fas fa-plus"></i> Tambah</button>
+                    </div>
+                    <div id="workout-list" class="checklist-container">
+                        <!-- Workouts will be injected here -->
+                    </div>
+                </section>
+
+                <!-- Study / Productivity Category -->
+                <section class="card habit-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-book-open"></i> Belajar & Produktivitas</h2>
+                    </div>
+                    <div class="study-form">
+                        <input type="text" id="study-topic" placeholder="Materi / Topik">
+                        <input type="text" id="study-duration" placeholder="Target Durasi (misal: 2 Jam)">
+                        <textarea id="study-notes" placeholder="Catatan singkat..."></textarea>
+                        <button id="save-study-btn" class="primary-btn">Simpan</button>
+                    </div>
+                    <div id="study-list" class="checklist-container mt-3">
+                        <!-- Studies will be injected here -->
+                    </div>
+                </section>
+
+                <!-- Healthy Eating Category -->
+                <section class="card habit-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-utensils"></i> Pola Makan Sehat</h2>
+                    </div>
+                    <div class="diet-warning hidden" id="diet-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Waktu makan malam sudah selesai (lewat 18:00), perbanyak minum air putih!</span>
+                    </div>
+                    <div class="checklist-item">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="diet-check">
+                            <span class="checkmark"></span>
+                            <span class="check-text">Tidak makan setelah jam 18.00 WIB</span>
+                        </label>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column: Finance & Savings -->
+            <div class="column">
+                <!-- Savings Tracker -->
+                <section class="card finance-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-coins"></i> Tabungan Harian</h2>
+                    </div>
+                    <form id="savings-form" class="input-form">
+                        <div class="form-group">
+                            <input type="text" id="saving-amount" class="currency-input" placeholder="Nominal (Rp)"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="saving-note" placeholder="Catatan Sumber / Tujuan" required>
+                        </div>
+                        <button type="submit" class="primary-btn w-100">Tambah Tabungan</button>
+                    </form>
+                    <div class="history-list mt-3" id="savings-history">
+                        <!-- Savings history injected here -->
+                    </div>
+                </section>
+
+                <!-- Finance Management -->
+                <section class="card finance-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-money-bill-wave"></i> Keuangan Harian</h2>
+                    </div>
+
+                    <div class="finance-summary-mini">
+                        <div class="mini-stat income">
+                            <span><i class="fas fa-arrow-down"></i> Pemasukan</span>
+                            <strong id="today-income">Rp 0</strong>
+                        </div>
+                        <div class="mini-stat expense">
+                            <span><i class="fas fa-arrow-up"></i> Pengeluaran</span>
+                            <strong id="today-expense">Rp 0</strong>
+                        </div>
+                    </div>
+
+                    <form id="finance-form" class="input-form mt-3">
+                        <div class="form-row">
+                            <select id="finance-type" required>
+                                <option value="income">Pemasukan</option>
+                                <option value="expense">Pengeluaran</option>
+                            </select>
+                            <select id="finance-category" required>
+                                <option value="Uang Saku">Uang Saku</option>
+                                <option value="Makan/Jajan">Makan/Jajan</option>
+                                <option value="Kebutuhan Belajar">Kebutuhan Belajar</option>
+                                <option value="Transport">Transport</option>
+                                <option value="Lain-lain">Lain-lain</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="finance-amount" class="currency-input" placeholder="Nominal (Rp)"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="finance-note" placeholder="Catatan / Keterangan" required>
+                        </div>
+                        <button type="submit" class="primary-btn w-100">Tambah Transaksi</button>
+                    </form>
+
+                    <h3 class="mt-4 mb-2">Riwayat Transaksi</h3>
+                    <div class="table-responsive">
+                        <table class="finance-table">
+                            <thead>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>Kategori</th>
+                                    <th>Catatan</th>
+                                    <th>Nominal</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="finance-history">
+                                <!-- Finance history injected here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="add-workout-modal" class="modal">
+        <div class="modal-content card">
+            <span class="close-modal">&times;</span>
+            <h2>Tambah Latihan Olahraga</h2>
+            <form id="custom-workout-form" class="mt-3">
+                <div class="form-group">
+                    <input type="text" id="workout-name" placeholder="Nama Latihan (misal: Plank)" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="workout-reps" placeholder="Repetisi/Set (misal: 3x30 detik)" required>
+                </div>
+                <button type="submit" class="primary-btn w-100">Simpan Latihan</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Reset Confirmation Modal -->
+    <div id="reset-modal" class="modal">
+        <div class="modal-content card reset-modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="reset-modal-header">
+                <div class="reset-icon-bubble">
+                    <i class="fas fa-arrow-rotate-left"></i>
+                </div>
+                <h2>Reset Data Web</h2>
+                <p class="reset-modal-desc">Pilih opsi reset data yang Anda butuhkan di bawah ini:</p>
+            </div>
+
+            <div class="reset-options">
+                <!-- Option 1: Reset Hari Ini -->
+                <div class="reset-option-card" id="btn-reset-today">
+                    <div class="reset-option-icon today">
+                        <i class="far fa-calendar-check"></i>
+                    </div>
+                    <div class="reset-option-text">
+                        <h4>Reset Checklist Hari Ini Saja</h4>
+                        <p>Mengosongkan centang checklist olahraga, diet, & sesi belajar untuk tanggal yang dipilih. Riwayat tabungan & keuangan tetap aman.</p>
+                    </div>
+                    <i class="fas fa-chevron-right reset-arrow"></i>
+                </div>
+
+                <!-- Option 2: Reset Semua Data -->
+                <div class="reset-option-card danger" id="btn-reset-all">
+                    <div class="reset-option-icon all">
+                        <i class="fas fa-trash-can"></i>
+                    </div>
+                    <div class="reset-option-text">
+                        <h4>Reset Semua Data (Pabrik)</h4>
+                        <p>Menghapus seluruh riwayat tabungan, transaksi pengeluaran/pemasukan, dan riwayat kebiasaan. Mengembalikan website ke kondisi awal.</p>
+                    </div>
+                    <i class="fas fa-chevron-right reset-arrow"></i>
+                </div>
+            </div>
+
+            <div class="reset-modal-footer">
+                <button type="button" class="btn-cancel btn-modal-cancel">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <i class="toast-icon fas fa-check-circle"></i>
+        <span id="toast-message">Pesan notifikasi</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
